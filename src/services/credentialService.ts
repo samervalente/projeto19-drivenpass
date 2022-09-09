@@ -24,8 +24,21 @@ export async function getUserCredentials(userId: number){
 }
 
 export async function getCredentialById(credentialId: number, userId: number){
+   const credential = await validateCredential(credentialId, userId)
+    credential.password = cryptr.decrypt(credential.password)
+
+    return credential
+}
+
+
+export async function deleteCredential(credentialId: number, userId: number){
+    const {id} = await validateCredential(credentialId, userId)
+    await credentialRepository.deleteCredential(id)
+}
+
+async function validateCredential(credentialId: number, userId: number){
     const credential = await credentialRepository.getCredentialById(credentialId)
-    
+
     if(!credential){
         throw {type: "not_found", message:"Credential not found"}
     }
@@ -33,7 +46,5 @@ export async function getCredentialById(credentialId: number, userId: number){
         throw {type: "unauthorized", message:"Unauthorized to access this credential"}
     }
 
-    credential.password = cryptr.decrypt(credential.password)
     return credential
-
 }
