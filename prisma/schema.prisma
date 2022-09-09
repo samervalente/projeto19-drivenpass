@@ -11,9 +11,59 @@ datasource db {
 }
 
 model users {
-  id          Int           @id @default(autoincrement())
-  email       String        @unique
-  password    String
-  createdAt   DateTime      @default(now())
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  password     String
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  credentials  credentials[]
+  secure_notes secure_notes[]
+  cards        cards[]
+  wifi         wifi[]
 }
 
+model credentials {
+  id        Int      @id @default(autoincrement())
+  User      users    @relation(fields: [userId], references: [id])
+  userId    Int
+  title     String
+  url       String
+  username  String
+  password  String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([userId, title])
+}
+
+model secure_notes {
+  id        Int      @id @default(autoincrement())
+  User      users    @relation(fields: [userId], references: [id])
+  userId    Int
+  title     String   @db.VarChar(50)
+  note      String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([userId, title])
+}
+
+model cards {
+  id             Int      @id @default(autoincrement())
+  User           users    @relation(fields: [userId], references: [id])
+  userId         Int
+  number         Int
+  printName      String
+  securityCode   Int
+  expirationDate String
+  password       String
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([userId, printName])
+}
+
+model wifi {
+  id              Int      @id @default(autoincrement())
+  User            users    @relation(fields: [userId], references: [id])
+  userId          Int
+  networkName     String
+  networkPassword String
+  createdAt       DateTime @default(now()) @db.Timestamptz(6)
+}

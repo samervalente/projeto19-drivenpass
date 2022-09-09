@@ -13,6 +13,7 @@ export async function getUser(email: string){
     return user
 }
 
+
 export async function registerUser(userData: authRepository.authDataType){
     const {password} = userData
     userData.password = bcrypt.hashSync(password, 10)

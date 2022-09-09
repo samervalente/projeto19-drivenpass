@@ -1,21 +1,21 @@
 
-import connection from "../database/postgres";
+import { users } from "@prisma/client";
+import client from "../database/prismaClient"
 
-export interface IUserData{
-    id: number;
-    email: string;
-    password: string;
+export type authDataType = Omit<users, 'id' | 'createdAt'>
+
+export async function getUserById(id: number){
+    const user = await client.users.findFirst({where: {id}})
+    return user
 }
 
-export type authDataType = Omit<IUserData, 'id'>
-
 export async function getUserByEmail(email: string){
-    const {rows: user} = await connection.query<IUserData>("SELECT * FROM users WHERE email = $1 ", [email])
-    return user[0]
+    const user = await client.users.findFirst({where: {email}})
+    return user
 }
 
 
 export async function insertUser(userData: authDataType){
-    const {email, password} = userData
-    await connection.query(`INSERT INTO users (email, password) VALUES ($1, $2)`,[email, password])
+    
+    await client.users.create({data: userData})
 }
