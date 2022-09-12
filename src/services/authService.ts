@@ -4,9 +4,7 @@ import bcrypt from "bcrypt"
 import * as authRepository from "../repositories/authRepository"
 import dotenv from "dotenv"
 
-
 dotenv.config()
-
 
 export async function getUser(email: string){
     const user = await authRepository.getUserByEmail(email)
@@ -14,7 +12,7 @@ export async function getUser(email: string){
 }
 
 
-export async function registerUser(userData: authRepository.authDataType){
+export async function registerUser(userData: authRepository.AuthDataType){
     const {password} = userData
     userData.password = bcrypt.hashSync(password, 10)
 

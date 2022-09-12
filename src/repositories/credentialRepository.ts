@@ -4,7 +4,6 @@ import { credentials } from "@prisma/client";
 
 export type CredentialType = Omit<credentials, "id"  | "createdAt">
 
-
 export async function insertCredential(credential: CredentialType){
     
     await client.credentials.create({data: credential})

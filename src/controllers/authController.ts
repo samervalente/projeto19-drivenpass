@@ -11,7 +11,7 @@ export async function registerUser(req: Request, res: Response){
 
 export async function loginUser(req: Request, res: Response){
     const userId = res.locals.userId
-    console.log(userId)
+   
     const token = await authService.loginUser(userId)
 
     return res.status(200).send(`Session token: ${token}`)

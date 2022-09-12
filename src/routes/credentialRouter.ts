@@ -8,6 +8,6 @@ const routes = Router()
 routes.post("/credentials", schemaValidator(credentialSchema), validateToken, createCredential)
 routes.get("/credentials", validateToken, getUserCredentials)
 routes.get("/credentials/:id", validateToken, getCredentialById)
-routes.delete("/credentials/delete/:id", validateToken, deleteCredential )
+routes.delete("/credentials/:id", validateToken, deleteCredential )
 
 export default routes
